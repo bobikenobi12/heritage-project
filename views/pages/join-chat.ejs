@@ -1,0 +1,43 @@
+<%- include('../partials/head-start-partial') %>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+			integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="css/chat.css" />
+		<title>Join chat</title>
+        <%- include('../partials/head-end-partial') %> 
+        <%- include('../partials/body-start-partial') %>
+		<div class="join-container">
+			<header class="join-header">
+				<h1><i class="fas fa-dog"></i> Chat</h1>
+			</header>
+			<main class="join-main">
+				<form action="/chat", method="get">
+					<div class="form-control">
+						<label for="username">Username</label>
+						<input
+							type="text"
+							name="username"
+							id="username"
+							placeholder="Enter username..."
+							required
+						/>
+					</div>
+					<div class="form-control">
+						<label for="room">Room</label>
+						<select name="room" id="room">
+							<option value="German Shepherd">German Shepherd</option>
+							<option value="Labrador Retriever">Labrador Retriever</option>
+							<option value="Pomeranian">Pomeranian</option>
+							<option value="Siberian Husky">Siberian Husky</option>
+							<option value="Shiba Inu">Shiba Inu</option>
+							<option value="Golden Retriever">Golden Retriever</option>
+						</select>
+					</div>
+					<button type="submit" class="btn">Join Chat</button>
+				</form>
+			</main>
+		</div>
+        <%- include('../partials/body-end-partial') %>

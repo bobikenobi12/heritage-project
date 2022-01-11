@@ -1,0 +1,107 @@
+body {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+  }
+  .sign-in {
+    min-width: 350px;
+  }
+  .sign-in__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #8e8e8e;
+    background-color: #fff;
+    margin: 0px 0px 10px;
+    padding: 10px 0px;
+  }
+  .sign-in__header-title {
+    color: #262626;
+    margin: 22px 86.5px 12px;
+  }
+  .sign-in__form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    margin: 24px 0px 0px;
+    align-items: center;
+  }
+  .sign-in__form-input {
+    min-width: 245px;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    background-color: #fafafa;
+    padding: 9px 0px 7px 8px;
+  }
+  .sign-in__form-button {
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  .sign-in__form-button--primary {
+    min-width: 245px;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #0095f6;
+    margin: 8px 40px 30px;
+    padding: 5px 9px 10px;
+    font-family: inherit;
+  }
+  .sign-in__form-separator {
+    display: flex;
+    align-items: center;
+    margin: 10px 40px 18px;
+  }
+  .sign-in__form-separator-text {
+    margin: 0px 18px;
+    font-size: 15px;
+    color: #8e8e8e;
+  }
+  .sign-in__form-separator-line {
+    background-color: #dbdbdb;
+    min-width: 97px;
+    height: 1px;
+  }
+  .sign-in__form-button--secondary {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+    background-color: #fff;
+    color: #355185;
+    font-family: inherit;
+  }
+  .sign-in__link {
+    text-decoration: none;
+  }
+  .sign-in__link--primary {
+    font-size: 12px;
+    margin: 12px 0px 0px;
+    color: #00376b;
+  }
+  .sign-in__link--primary:hover {
+    text-decoration: underline;
+  }
+  .sign-in__footer {
+    text-align: center;
+    border: 1px solid #8e8e8e;
+    background-color: #fff;
+    margin: 0px 0px 10px;
+    padding: 25px;
+  }
+  .sign-in__link--secondary {
+    color: #0095f6;
+  }
+  .sign-in__link--secondary:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 480px) {
+    .sign-in__header {
+      border: none;
+    }
+    .sign-in__footer {
+      border: none;
+      margin-top: 60px;
+    }
+  }
+  

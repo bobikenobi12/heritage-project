@@ -1,0 +1,13 @@
+.primary-button {
+  padding: 5px 10px;
+  color: #fff;
+  background-color: #005eb8;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  line-height: 20px;
+}
+.primary-button:hover {
+  cursor: pointer;
+  background-color: #004485;
+}

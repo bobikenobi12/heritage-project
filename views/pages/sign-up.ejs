@@ -1,0 +1,63 @@
+<%- include('../partials/head-start-login-partial')  %>
+    <link rel="stylesheet" href="/css/sign-up.css" />   
+    <title>Vain signup</title>
+    <%- include('../partials/head-end-partial')  %>
+    <%- include('../partials/body-start-login-partial')  %>
+    <ul>
+      <% if(typeof errors != 'undefined') {%> 
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+      <%  });  %> 
+      <% } %>
+    </ul>
+    <div class="sign-up">
+      <div class="sign-up__header">
+        <h1 class="sign-up__header-title">Heritage</h1>
+        <form action="/users/sign-up" method="post">
+          <div class="sign-up__form">
+            <h2 class="sign-up__form-title">Sign up to view your dog's heritage.</h2>
+            <input
+              placeholder="Name"
+              class="sign-up__form-input"
+              name="name"
+            />
+            <input
+              placeholder="Email"
+              class="sign-up__form-input"
+              name="email"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              class="sign-up__form-input"
+              name="password"
+            />
+            <input
+              type="password"
+              placeholder="Confirm password"
+              class="sign-up__form-input"
+              name="password2"
+            />
+            <button
+              class="
+                sign-up__form-button
+                sign-up__form-button--secondary
+              "
+            >
+              <div class="sign-up__form-button-text">Sign up</div>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div>
+          <p class="sign-up__footer">
+            Have an account?
+            <a class="sign-up__link" href="/users/sign-in"
+              >Sign in</a
+            >
+          </p>
+      </div>
+    </div>
+  </body>
+  <%- include('../partials/body-end-partial') %>
+

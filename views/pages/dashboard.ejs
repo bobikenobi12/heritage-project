@@ -1,0 +1,10 @@
+<%- include('../partials/head-start-partial') %>
+<title>Home</title>
+<link rel="stylesheet" href="/css/home.css">
+<%- include('../partials/head-end-partial') %> 
+<%- include('../partials/body-start-partial') %>   
+<div class="center">
+<a href="/users/sign-out">Sign out</a>
+<h1 >Hello <%= user.charAt(0).toUpperCase() + user.slice(1) %></h1>
+</div>
+<%- include('../partials/body-end-partial') %>

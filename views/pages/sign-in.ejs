@@ -1,0 +1,60 @@
+<%- include('../partials/head-start-login-partial') %>
+<link rel="stylesheet" href="/css/sign-in.css" />
+<title>Heritage sign-in</title>
+<%- include('../partials/head-end-partial') %> 
+<%- include('../partials/body-start-login-partial') %>
+<div class="sign-in">
+  <div class="sign-in__header">
+    <h1 class="sign-in__header-title">Heritage</h1>
+    <ul>
+    <% if(messages.success_msg) {%> 
+      <li><%= messages.success_msg %></li>
+      <% } %> 
+      </ul>
+
+      <ul>
+        <% if(messages.error) { %> 
+          <li><%= messages.error %></li>
+          <% } %> 
+      </ul>
+    <form action="/users/sign-in" method="post" class="sign-in__form">
+      <input
+        type="email"
+        placeholder="Email"
+        class="sign-in__form-input"
+        name="email"
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        class="sign-in__form-input"
+        name="password"
+      />
+      <button
+        type="submit"
+        class="sign-in__form-button sign-in__form-button--primary"
+      >
+        Sign in
+      </button>
+      <!-- <div class="sign-in__form-separator">
+        <div class="sign-in__form-separator-line"></div>
+        <span class="sign-in__form-separator-text">OR</span>
+        <div class="sign-in__form-separator-line"></div>
+      </div>
+      <button class="sign-in__form-button sign-in__form-button--secondary">
+        <i class="fab fa-facebook-square"></i>
+        Sign in with Facebook
+      </button>
+      <a href="/forgot-password" class="sign-in__link sign-in__link--primary"
+        >Forgot password?</a
+      > -->
+    </form>
+  </div>
+  <p class="sign-in__footer">
+    Don't have an account?
+    <a class="sign-in__link sign-in__link--secondary" href="/users/sign-up"
+      >Sign up</a
+    >
+  </p>
+</div>
+<%- include('../partials/body-end-partial') %>

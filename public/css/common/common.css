@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald:500');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    margin: 0 auto;
+    height: 100%;
+  }
+  body {
+    background-color: #f2f2f7;;
+  }
