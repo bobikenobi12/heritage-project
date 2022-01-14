@@ -15,17 +15,17 @@ socket.on('roomUsers', ({ room, users }) => {
 outputRoomName(room);
 outputUsers(users);
 })
-socket.on('message', message => {
+socket.on('message', (message) => {
     console.log(message);
     outputMessage(message);
 
-    chatMessages.scrollTop = chatMessages.scrollHeight
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const msg = e.target.elements.msg.value;
+    let msg = e.target.elements.msg.value;
 
     socket.emit('chatMessage', msg);
 

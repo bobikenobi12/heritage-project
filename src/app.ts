@@ -14,9 +14,6 @@ import initializePassport from "./passportConfig";
 import * as fs from "fs";
 const { Server } = require("socket.io");
 const http = require("http");
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
 import formatMessage from "../public/js/messages";
 import {
   userJoin,
@@ -24,6 +21,11 @@ import {
   userLeave,
   getRoomUsers,
 } from "../public/js/chat-users";
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 initializePassport(passport);
 
 const pool = new Pool({
@@ -59,49 +61,6 @@ app.use("/js", express.static(path.join(ROOT_DIR, "/public/js")));
 app.use("/uploads", express.static(path.join(ROOT_DIR, "/public/uploads")));
 
 let id, name, email;
-app.get("/join-chat", (req, res) => {
-  res.render("pages/join-chat");
-});
-app.get("/chat", (req, res) => {
-  res.render("pages/chat");
-});
-io.on("connection", (socket) => {
-  socket.on("joinRoom", ({ username, room }) => {
-    const user = userJoin(socket.id, username, room);
-    socket.join(user.room);
-
-    socket.emit("message", formatMessage(botName, "Welcome to the chat room."));
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        "message",
-        formatMessage(botName, `${user.username} has joined the chat.`)
-      );
-    io.to(user.room).emit("roomUsers", {
-      room: user.room,
-      users: getRoomUsers(user.room),
-    });
-    socket.on("chatMessage", (msg) => {
-      const user = getCurrentUser(socket.id);
-      io.to(user.room).emit("message", formatMessage(user.username, msg));
-    });
-
-    socket.on("disconnect", () => {
-      const user = userLeave(socket.id);
-
-      if (user) {
-        io.to(user.room).emit(
-          "message",
-          formatMessage(botName, `${user.username} has left the chat.`)
-        );
-        io.to(user.room).emit("roomUsers", {
-          room: user.room,
-          users: getRoomUsers(user.room),
-        });
-      }
-    });
-  });
-});
 app.get("/users/sign-up", checkAuthenticated, (req, res) => {
   res.render("pages/sign-up");
 });
@@ -176,6 +135,56 @@ app.get("/users/sign-out", (req: any, res) => {
   req.logOut();
   req.flash("success_msg", "You have been signed out.");
   res.redirect("/users/sign-in");
+});
+
+io.on('connection', socket => {
+  socket.on('joinRoom', ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
+
+    socket.join(user.room);
+
+    socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+
+    socket.broadcast
+      .to(user.room)
+      .emit(
+        'message',
+        formatMessage(botName, `${user.username} has joined the chat`)
+      );
+
+    io.to(user.room).emit('roomUsers', {
+      room: user.room,
+      users: getRoomUsers(user.room)
+    });
+  });
+
+  socket.on('chatMessage', msg => {
+    const user = getCurrentUser(socket.id);
+
+    io.to(user.room).emit('message', formatMessage(user.username, msg));
+  });
+
+  socket.on('disconnect', () => {
+    const user = userLeave(socket.id);
+
+    if (user) {
+      io.to(user.room).emit(
+        'message',
+        formatMessage(botName, `${user.username} has left the chat`)
+      );
+
+      io.to(user.room).emit('roomUsers', {
+        room: user.room,
+        users: getRoomUsers(user.room)
+      });
+    }
+  });
+});
+app.get("/join-chat", (req, res) => {
+  res.render("pages/join-chat");
+});
+app.get("/chat", (req, res) => {
+  res.render("pages/chat");
 });
 
 app.get("/users/images", checkNotAuthenticated, (req: any, res) => {
@@ -469,6 +478,6 @@ function checkNotAuthenticated(req, res, next) {
   res.redirect("/users/sign-in");
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Running server on port: ${PORT}.`);
 });
