@@ -1,23 +1,70 @@
 <%- include('../partials/head-start-partial') %>
 <title>Binary Tree Structure</title>
 <link href="/css/family-tree.css"rel="stylesheet"/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css"
+  integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 <%- include('../partials/head-end-partial') %> 
 <%- include('../partials/body-start-partial') %>
-<div class="container">
-    <div class="row">
-        <div class="tree">
-            <ul>
-                <li> <a href="/users/user/family/child"><img src="images/1.jpg"><span>Child</span></a>
+<% if(typeof results != 'undefined') { %>
+    <div class="container">
+        <div class="row">
+            <div class="tree">
                 <ul>
-                    <li><a href="/users/user/family/mother"><img src="images/2.jpg"><span>Mother</span></a>
-                   
+                    <li> <div><img src="/uploads/<%= results.child[1] %>"><span>Child:</span><span><%= results.child[0] %> </span></div>
+                    <ul>
+                        <li><div ><img src="/uploads/<%= results.mother[1] %>"><span>Mother:</span><span><%= results.mother[0] %></span></div>
+                       <ul>
+                        <li><div ><img src="/uploads/<%= results.mother_grandmother[1] %>"><span>Grandmother:</span><span><%= results.mother_grandmother[0] %></span></div>
+                            <li><div ><img src="/uploads/<%= results.mother_grandfather[1] %>"><span>Grandfather:</span><span><%= results.mother_grandfather[0] %></span></div>
+                       </ul>
+                    </li>
+                    <li> <div ><img src="/uploads/<%= results.father[1] %>"><span>Father:</span><span><%= results.father[0] %></span></div>
+                        <ul>
+                            <li><div><img src="/uploads/<%= results.father_grandmother[1] %>"><span>Grandmother:</span><span><%= results.father_grandmother[0] %></span></div>
+                                <li><div><img src="/uploads/<%= results.father_grandfather[1] %>"><span>Grandfather:</span><span><%= results.father_grandfather[0] %></span></div>
+                        </ul>
                 </li>
-                <li> <a href="/users/user/family/father"><img src="images/5.jpg"><span>Father</span></a>
-            </li>
-        </ul>
-    </li>
-</ul>
-</div>
-</div>
-</div>
+            </ul>
+        </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+<% } else {%>
+    <div class="container">
+        <div class="row">
+            <div class="tree">
+                <ul>
+                    <li> <div><img src="/images/dog.jpg"><span>Child-Hysky</span></div>
+                    <ul>
+                        <li><div ><img src="/images/dog.jpg"><span>Mother</span></div>
+                       <ul>
+                        <li><div ><img src="/images/dog.jpg"><span>Grandmother</span></div>
+                            <li><div ><img src="/images/dog.jpg"><span>Grandfather</span></div>
+                       </ul>
+                    </li>
+                    <li> <div ><img src="/images/dog.jpg"><span>Father</span></div>
+                        <ul>
+                            <li><div><img src="/images/dog.jpg"><span>Grandmother</span></div>
+                                <li><div><img src="/images/dog.jpg"><span>Grandfather</span></div>
+                        </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+<% } %>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"
+  integrity="sha512-pax4MlgXjHEPfCwcJLQhigY7+N8rt6bVvWLFyUMuxShv170X53TRzGPmPkZmGBhk+jikR8WBM4yl7A9WMHHqvg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
 <%- include('../partials/body-end-partial') %>

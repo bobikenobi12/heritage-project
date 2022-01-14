@@ -59,10 +59,10 @@ app.use("/js", express.static(path.join(ROOT_DIR, "/public/js")));
 app.use("/uploads", express.static(path.join(ROOT_DIR, "/public/uploads")));
 
 let id, name, email;
-app.get("/join-chat",  (req, res) => {
+app.get("/join-chat", (req, res) => {
   res.render("pages/join-chat");
 });
-app.get("/chat",  (req, res) => {
+app.get("/chat", (req, res) => {
   res.render("pages/chat");
 });
 io.on("connection", (socket) => {
@@ -299,8 +299,7 @@ app.post("/users/user/friends/add", (req: any, res) => {
   }
   pool
     .query(`SELECT email FROM users WHERE email=$1`, [friend_email])
-    .then((results) => {
-    })
+    .then((results) => {})
     .catch((err) => {
       errors.push({ message: "Email not found!" });
     });
@@ -308,84 +307,154 @@ app.post("/users/user/friends/add", (req: any, res) => {
     res.render("pages/add-friend", { errors });
   } else {
     pool
-        .query(`UPDATE users SET friends=array_append(friends, '${friend_email}') WHERE email=$1`, [email])
-        .then((results) => {
-          req.flash("success_msg", "Friend added successfully!");
-          res.redirect("/users/user/friends");
-        })
-        .catch((err) => {
-          throw err;
-        });
-  }
-});
-
-app.get("/users/user/friends/remove/:friendEmail", checkNotAuthenticated, (req: any, res) => {
-  let friendEmail = req.params.friendEmail;
-  pool
-    .query(`UPDATE users SET friends=array_remove(friends, '${friendEmail}') WHERE email=$1`, [email])
-    .then((results) => {
-      req.flash("success_msg", "Friend removed successfully!");
-      res.redirect("/users/user/friends");
-    })
-    .catch((err) => {
-      throw err;
-    });
-});
-
-app.get("/users/user/friends", checkNotAuthenticated, (req, res) => {
-  pool
-    .query(`SELECT friends FROM users WHERE email=$1`, [email])
-    .then((results) => {
-      res.render("pages/friends-list", { results: Object.values(results.rows[0])});
-    })
-    .catch((err) => {
-      throw err;
-    });
-});
-let member;
-app.get("/users/user/family/:member", (req, res) => {
-  member = req.params.member;
-  res.render("pages/add-family", { member});
-})
-
-app.post("/users/user/family/add", checkNotAuthenticated, upload.single("image"), (req: any, res) => {
-  const { breed } = req.body;
-  let family_member;
-  let image;
-  let errors = [];
-  if (typeof req.file.filename === "undefined" || !breed) {
-    errors.push({ message: "Please enter all fields" });
-  } else {
-    image = req.file.filename;
-  }
-  if(`${member}`==='child') {
-    family_member = 'child';
-  }else if(`${member}`==='mother') {
-    family_member = 'mother';
-  }else {
-    family_member = 'father';
-  }
-  if (errors.length > 0) {
-    res.render("pages/add-family", { errors, member });
-  } else {
-    pool
       .query(
-        `INSERT INTO family ($1, family_id) VALUES ($2, $3)`,
-        [family_member, 'breed'  , id]
+        `UPDATE users SET friends=array_append(friends, '${friend_email}') WHERE email=$1`,
+        [email]
       )
       .then((results) => {
-        req.flash("success_msg", "Image uploaded successfully");
-        res.redirect("/users/images");
+        req.flash("success_msg", "Friend added successfully!");
+        res.redirect("/users/user/friends");
       })
       .catch((err) => {
         throw err;
       });
   }
-})
+});
+
+app.get(
+  "/users/user/friends/remove/:friendEmail",
+  checkNotAuthenticated,
+  (req: any, res) => {
+    let friendEmail = req.params.friendEmail;
+    pool
+      .query(
+        `UPDATE users SET friends=array_remove(friends, '${friendEmail}') WHERE email=$1`,
+        [email]
+      )
+      .then((results) => {
+        req.flash("success_msg", "Friend removed successfully!");
+        res.redirect("/users/user/friends");
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+);
+
+app.get("/users/user/friends", checkNotAuthenticated, (req, res) => {
+  pool
+    .query(`SELECT friends FROM users WHERE email=$1`, [email])
+    .then((results) => {
+      res.render("pages/friends-list", {
+        results: Object.values(results.rows[0]),
+      });
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+app.get("/users/user/family/add", (req: any, res) => {
+  res.render("pages/add-family");
+});
+
+const cpUpload = upload.fields([
+  { name: "image_child", maxCount: 1 },
+  { name: "image_mother", maxCount: 1 },
+  { name: "image_father", maxCount: 1 },
+  { name: "image_grandmother_mother", maxCount: 1 },
+  { name: "image_grandfather_mother", maxCount: 1 },
+  { name: "image_grandmother_father", maxCount: 1 },
+  { name: "image_grandfather_father", maxCount: 1 },
+]);
+app.post(
+  "/users/user/family/add",
+  checkNotAuthenticated,
+  cpUpload,
+  (req: any, res) => {
+    const {
+      breed_child,
+      breed_mother,
+      breed_father,
+      breed_grandmother_mother,
+      breed_grandfather_mother,
+      breed_grandmother_father,
+      breed_grandfather_father,
+    } = req.body;
+    let errors = [];
+    let image_child,
+      image_mother,
+      image_father,
+      image_grandmother_mother,
+      image_grandfather_mother,
+      image_grandmother_father,
+      image_grandfather_father;
+    if (
+      !breed_child ||
+      typeof req.files["image_child"] === "undefined" ||
+      !breed_mother ||
+      typeof req.files["image_mother"] === "undefined" ||
+      !breed_father ||
+      typeof req.files["image_father"] === "undefined" ||
+      !breed_grandmother_mother ||
+      typeof req.files["image_grandmother_mother"] === "undefined" ||
+      !breed_grandfather_mother ||
+      typeof req.files["image_grandfather_mother"] === "undefined" ||
+      !breed_grandmother_father ||
+      typeof req.files["image_grandmother_father"] === "undefined" ||
+      !breed_grandfather_father ||
+      typeof req.files["image_grandfather_father"] === "undefined"
+    ) {
+      errors.push({ message: "Please enter all fields" });
+    } else {
+      image_child = req.files["image_child"][0].filename;
+      image_mother = req.files["image_mother"][0].filename;
+      image_father = req.files["image_father"][0].filename;
+      image_grandmother_mother =
+        req.files["image_grandmother_mother"][0].filename;
+      image_grandfather_mother =
+        req.files["image_grandfather_mother"][0].filename;
+      image_grandmother_father =
+        req.files["image_grandmother_father"][0].filename;
+      image_grandfather_father =
+        req.files["image_grandfather_father"][0].filename;
+    }
+    if (errors.length > 0) {
+      res.render("pages/add-family", { errors });
+    } else {
+      pool
+        .query(
+          `INSERT INTO family (child, mother, father, father_grandmother, father_grandfather, mother_grandmother, mother_grandfather, family_id) VALUES (
+           '{"${breed_child}", "${image_child}"}',
+           '{"${breed_mother}", "${image_mother}"}', 
+           '{"${breed_father}", "${image_father}"}',
+           '{"${breed_grandmother_father}", "${image_grandmother_father}"}',
+           '{"${breed_grandfather_father}", "${image_grandfather_father}"}',
+           '{"${breed_grandmother_mother}", "${image_grandmother_mother}"}',
+           '{"${breed_grandfather_mother}", "${image_grandfather_mother}"}',
+           ${id}
+          );
+           `
+        )
+        .then((results) => {
+          res.redirect("/users/user/family");
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  }
+);
 app.get("/users/user/family", checkNotAuthenticated, (req, res) => {
-  res.render("pages/family-tree");
-})
-app.post
+  pool
+    .query(`SELECT * FROM family WHERE family_id=$1`, [id])
+    .then((results) => {
+      res.render("pages/family-tree", { results: results.rows[0] });
+    })
+    .catch((err) => {
+      throw err;
+    });
+});
+
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect("/users/dashboard");

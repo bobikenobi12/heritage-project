@@ -25,7 +25,7 @@ include('../partials/body-start-partial') %>
     <div class="col-lg-6 mx-auto mt-4">
       <div class="card shadow">
         <div class="card-header bg-primary">
-          <h3 class="text-light">Add <%= member %> </h3>
+          <h3 class="text-light">Add family members </h3>
         </div>
         <div class="card-body p-4">
           <form
@@ -34,24 +34,153 @@ include('../partials/body-start-partial') %>
             id="add-form"
             enctype="multipart/form-data"
           >
+          <div class="mb-3">
+            <p>Child:</p>
+          </div>
             <div class="mb-3">
-              <label for="breed">Breed</label>
+              <label for="breed_child">Breed</label>
               <input
                 type="text"
-                name="breed"
+                name="breed_child"
                 class="form-control form-control-lg"
                 placeholder="Enter breed"
                 required
               />
             </div>
               <div class="mb-3">
-                <label for="image" class="form-label">Select Image</label>
+                <label for="image_child" class="form-label">Select Image</label>
                 <input
                   type="file"
-                  name="image"
+                  name="image_child"
                   class="form-control form-control-lg"
                 />
               </div>
+              <div class="mb-3">
+                <p>Mother:</p>
+              </div>
+                <div class="mb-3">
+                  <label for="breed_mother">Breed</label>
+                  <input
+                    type="text"
+                    name="breed_mother"
+                    class="form-control form-control-lg"
+                    placeholder="Enter breed"
+                    required
+                  />
+                </div>
+                  <div class="mb-3">
+                    <label for="image_mother" class="form-label">Select Image</label>
+                    <input
+                      type="file"
+                      name="image_mother"
+                      class="form-control form-control-lg"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <p>Father:</p>
+                  </div>
+                    <div class="mb-3">
+                      <label for="breed_father">Breed</label>
+                      <input
+                        type="text"
+                        name="breed_father"
+                        class="form-control form-control-lg"
+                        placeholder="Enter breed"
+                        required
+                      />
+                    </div>
+                      <div class="mb-3">
+                        <label for="image_father" class="form-label">Select Image</label>
+                        <input
+                          type="file"
+                          name="image_father"
+                          class="form-control form-control-lg"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <p>Mother of child's mother:</p>
+                      </div>
+                        <div class="mb-3">
+                          <label for="breed_grandmother_mother">Breed</label>
+                          <input
+                            type="text"
+                            name="breed_grandmother_mother"
+                            class="form-control form-control-lg"
+                            placeholder="Enter breed"
+                            required
+                          />
+                        </div>
+                          <div class="mb-3">
+                            <label for="image_grandmother_mother" class="form-label">Select Image</label>
+                            <input
+                              type="file"
+                              name="image_grandmother_mother"
+                              class="form-control form-control-lg"
+                            />
+                          </div>
+                          <div class="mb-3">
+                            <p>Father of child's mother:</p>
+                          </div>
+                            <div class="mb-3">
+                              <label for="breed_grandfather_mother">Breed</label>
+                              <input
+                                type="text"
+                                name="breed_grandfather_mother"
+                                class="form-control form-control-lg"
+                                placeholder="Enter breed"
+                                required
+                              />
+                            </div>
+                              <div class="mb-3">
+                                <label for="image_grandfather_mother" class="form-label">Select Image</label>
+                                <input
+                                  type="file"
+                                  name="image_grandfather_mother"
+                                  class="form-control form-control-lg"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <p>Mother of child's father:</p>
+                              </div>
+                                <div class="mb-3">
+                                  <label for="breed_grandmother_father">Breed</label>
+                                  <input
+                                    type="text"
+                                    name="breed_grandmother_father"
+                                    class="form-control form-control-lg"
+                                    placeholder="Enter breed"
+                                    required
+                                  />
+                                </div>
+                                  <div class="mb-3">
+                                    <label for="image_grandmother_father" class="form-label">Select Image</label>
+                                    <input
+                                      type="file"
+                                      name="image_grandmother_father"
+                                      class="form-control form-control-lg"
+                                    />
+                                  </div>
+                                  <div class="mb-3">
+                                    <p>Father of child's father:</p>
+                                  </div>
+                                    <div class="mb-3">
+                                      <label for="breed_grandfather_father">Breed</label>
+                                      <input
+                                        type="text"
+                                        name="breed_grandfather_father"
+                                        class="form-control form-control-lg"
+                                        placeholder="Enter breed"
+                                        required
+                                      />
+                                    </div>
+                                      <div class="mb-3">
+                                        <label for="image_grandfather_father" class="form-label">Select Image</label>
+                                        <input
+                                          type="file"
+                                          name="image_grandfather_father"
+                                          class="form-control form-control-lg"
+                                        />
+                                      </div>
               <div class="mb-3 d-grid">
                   <input type="submit" name="submit" value="Update Upload" class="btn btn-primary btn-lg">
               </div>

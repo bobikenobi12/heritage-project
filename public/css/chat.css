@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Oswald:500');
 :root {
 	--dark-color-a: #667aff;
 	--dark-color-b: #7386ff;
@@ -149,11 +148,15 @@ a {
 
 .join-main .form-control {
 	margin-bottom: 20px;
+	background-color: var(--dark-color-b);
+	border: none;
+
 }
 
 .join-main label {
 	display: block;
 	margin-bottom: 5px;
+	color: var(--light-color);
 }
 
 .join-main input[type='text'] {
@@ -161,6 +164,7 @@ a {
 	padding: 5px;
 	height: 40px;
 	width: 100%;
+	border: none;
 }
 
 .join-main select {
