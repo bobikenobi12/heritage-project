@@ -21,6 +21,7 @@ import {
   userLeave,
   getRoomUsers,
 } from "../public/js/chat-users";
+import { nextTick } from "process";
 
 const app = express();
 const server = http.createServer(app);
@@ -137,45 +138,45 @@ app.get("/users/sign-out", (req: any, res) => {
   res.redirect("/users/sign-in");
 });
 
-io.on('connection', socket => {
-  socket.on('joinRoom', ({ username, room }) => {
+io.on("connection", (socket) => {
+  socket.on("joinRoom", ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
 
     socket.join(user.room);
 
-    socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
+    socket.emit("message", formatMessage(botName, "Welcome to ChatCord!"));
 
     socket.broadcast
       .to(user.room)
       .emit(
-        'message',
+        "message",
         formatMessage(botName, `${user.username} has joined the chat`)
       );
 
-    io.to(user.room).emit('roomUsers', {
+    io.to(user.room).emit("roomUsers", {
       room: user.room,
-      users: getRoomUsers(user.room)
+      users: getRoomUsers(user.room),
     });
   });
 
-  socket.on('chatMessage', msg => {
+  socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
 
-    io.to(user.room).emit('message', formatMessage(user.username, msg));
+    io.to(user.room).emit("message", formatMessage(user.username, msg));
   });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     const user = userLeave(socket.id);
 
     if (user) {
       io.to(user.room).emit(
-        'message',
+        "message",
         formatMessage(botName, `${user.username} has left the chat`)
       );
 
-      io.to(user.room).emit('roomUsers', {
+      io.to(user.room).emit("roomUsers", {
         room: user.room,
-        users: getRoomUsers(user.room)
+        users: getRoomUsers(user.room),
       });
     }
   });
@@ -307,27 +308,53 @@ app.post("/users/user/friends/add", (req: any, res) => {
     });
   }
   pool
-    .query(`SELECT email FROM users WHERE email=$1`, [friend_email])
-    .then((results) => {})
+    .query(`SELECT friends FROM users WHERE users.email=$1 AND $2 = ANY(friends);`, [email, friend_email])
+    .then((results) => {
+      console.log({
+        log1: results.rows[0],
+        log2: "reaches friends"
+      })
+      if(typeof results.rows[0] != "undefined"){
+      errors.push({message: "Friend already added"});
+      }
+    })
     .catch((err) => {
-      errors.push({ message: "Email not found!" });
+      throw err;
     });
-  if (errors.length > 0) {
-    res.render("pages/add-friend", { errors });
-  } else {
     pool
-      .query(
-        `UPDATE users SET friends=array_append(friends, '${friend_email}') WHERE email=$1`,
-        [email]
-      )
+      .query(`SELECT email FROM users WHERE email=$1`, [friend_email])
       .then((results) => {
-        req.flash("success_msg", "Friend added successfully!");
-        res.redirect("/users/user/friends");
+        console.log({
+          log1: results.rows[0],
+          log2: "reaches email"
+      })
+        if(results.rows[0]==="undefined") {
+          errors.push({ message: "Email not found!" });
+        }
       })
       .catch((err) => {
         throw err;
       });
-  }
+    if (errors.length > 0) {
+      console.log({
+        lo1:errors,
+        log2: "reaches errors"
+      });
+      res.render("pages/add-friend", { errors });
+    } else {
+      pool
+        .query(
+          `UPDATE users SET friends=array_append(friends, '${friend_email}') WHERE email=$1`,
+          [email]
+        )
+        .then((results) => {
+          req.flash("success_msg", "Friend added successfully!");
+          res.redirect("/users/user/friends");
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
 });
 
 app.get(
@@ -363,7 +390,19 @@ app.get("/users/user/friends", checkNotAuthenticated, (req, res) => {
     });
 });
 app.get("/users/user/family/add", (req: any, res) => {
-  res.render("pages/add-family");
+  pool
+    .query(`SELECT * FROM family WHERE family_id=$1`, [id])
+    .then((results) => {
+      if (typeof results.rows[0] != "undefined") {
+        req.flash("error_msg", "Family members already added.");
+        res.redirect("/users/user/family");
+      } else {
+        res.render("pages/add-family");
+      }
+    })
+    .catch((err) => {
+      throw err;
+    });
 });
 
 const cpUpload = upload.fields([

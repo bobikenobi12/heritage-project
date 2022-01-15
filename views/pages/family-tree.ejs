@@ -10,6 +10,17 @@
 />
 <%- include('../partials/head-end-partial') %> 
 <%- include('../partials/body-start-partial') %>
+<% if (messages.error_msg) { %>
+    <div class="alert alert-dismissible fade show alert-danger" role="alert">
+      <button
+        class="btn-close"
+        type="button"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+      <strong class="text-center"><%= messages.error_msg %></strong>
+    </div>
+    <% } %>
 <% if(typeof results != 'undefined') { %>
     <div class="container">
         <div class="row">
@@ -40,7 +51,7 @@
         <div class="row">
             <div class="tree">
                 <ul>
-                    <li> <div><img src="/images/dog.jpg"><span>Child-Hysky</span></div>
+                    <li> <div><img src="/images/dog.jpg"><span>Child</span></div>
                     <ul>
                         <li><div ><img src="/images/dog.jpg"><span>Mother</span></div>
                        <ul>

@@ -34,6 +34,17 @@ include('../partials/body-start-partial') %>
         <strong><%= messages.success_msg %> </strong>
       </div>
       <% } %>
+      <% if (messages.error_msg) { %>
+        <div class="alert alert-dismissible fade show alert-danger" role="alert">
+          <button
+            class="btn-close"
+            type="button"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+          <strong><%= messages.error_msg %> </strong>
+        </div>
+        <% } %>
       <div class="table-responsive">
         <% if (results != ' ') { %>
         <table class="table table-stripped text-center my-3">

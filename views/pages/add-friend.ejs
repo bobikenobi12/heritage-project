@@ -15,11 +15,17 @@
 />
 <%- include('../partials/head-end-partial') %> <%-
 include('../partials/body-start-partial') %>
-<ul class="alert">
-  <% if(typeof errors != 'undefined') {%> <% errors.forEach(error => { %>
-  <li><%= error.message %></li>
-  <% }); %> <% } %>
-</ul>
+<% if (.success_msg) { %>
+  <div class="alert alert-dismissible fade show alert-success" role="alert">
+    <button
+      class="btn-close"
+      type="button"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+    <strong><%= messages.success_msg %> </strong>
+  </div>
+  <% } %>
 <div class="container">
   <div class="row">
     <div class="col-lg-6 mx-auto mt-4">
