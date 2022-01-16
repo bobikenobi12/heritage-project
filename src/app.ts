@@ -307,54 +307,27 @@ app.post("/users/user/friends/add", (req: any, res) => {
       message: "Please enter the email of the friend you wish to add",
     });
   }
-  pool
-    .query(`SELECT friends FROM users WHERE users.email=$1 AND $2 = ANY(friends);`, [email, friend_email])
+  // pool
+  //   .query(`SELECT email FROM users WHERE email=$1`, [friend_email])
+  //   .then((results) => {})
+  //   .catch((err) => {
+  //     errors.push({ message: "Email not found!" });
+  //   });
+  if (errors.length > 0) {
+    res.render("pages/add-friend", { errors });
+  } else {
+    pool.query(
+      `UPDATE users SET friends=array_append(friends, '${friend_email}') WHERE email=$1`,
+      [email]
+    )
     .then((results) => {
-      console.log({
-        log1: results.rows[0],
-        log2: "reaches friends"
-      })
-      if(typeof results.rows[0] != "undefined"){
-      errors.push({message: "Friend already added"});
-      }
+      req.flash("success_msg", "Friend added successfully!");
+      res.redirect("/users/user/friends");
     })
     .catch((err) => {
       throw err;
     });
-    pool
-      .query(`SELECT email FROM users WHERE email=$1`, [friend_email])
-      .then((results) => {
-        console.log({
-          log1: results.rows[0],
-          log2: "reaches email"
-      })
-        if(results.rows[0]==="undefined") {
-          errors.push({ message: "Email not found!" });
-        }
-      })
-      .catch((err) => {
-        throw err;
-      });
-    if (errors.length > 0) {
-      console.log({
-        lo1:errors,
-        log2: "reaches errors"
-      });
-      res.render("pages/add-friend", { errors });
-    } else {
-      pool
-        .query(
-          `UPDATE users SET friends=array_append(friends, '${friend_email}') WHERE email=$1`,
-          [email]
-        )
-        .then((results) => {
-          req.flash("success_msg", "Friend added successfully!");
-          res.redirect("/users/user/friends");
-        })
-        .catch((err) => {
-          throw err;
-        });
-    }
+}
 });
 
 app.get(
